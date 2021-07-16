@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ListItem,
     Typography,
@@ -7,26 +7,40 @@ import {
     ListItemSecondaryAction,
     ListItemIcon,
 } from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { ChevronRight, Done } from '@material-ui/icons/';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
+import { lightGreen } from '@material-ui/core/colors/';
 
-import { deleteTodo } from '../../actions/todos';
+import { deleteTodo, updateTodo } from '../../actions/todos';
 
 const Todo = ({ todo }) => {
+    const [done, setDone] = useState(todo.done);
     const dispatch = useDispatch();
-    const handleClick = (e) => {
+    const handleDelete = (e) => {
         e.preventDefault();
 
         dispatch(deleteTodo(todo._id));
     };
 
+    const handleClick = (e) => {
+        e.preventDefault();
+
+        setDone((prev) => !prev);
+    };
+
+    useEffect(() => {
+        dispatch(updateTodo(todo._id, { ...todo, done: done }));
+    }, [done]);
+
     return (
-        <ListItem button>
-            <ListItemIcon>
-                <ChevronRightIcon />
-            </ListItemIcon>
+        <ListItem
+            button
+            onClick={handleClick}
+            style={done ? { backgroundColor: lightGreen[500] } : null}
+        >
+            <ListItemIcon>{done ? <Done /> : <ChevronRight />}</ListItemIcon>
             <ListItemText
                 primary={todo.title}
                 secondary={format(
@@ -38,7 +52,7 @@ const Todo = ({ todo }) => {
                 <IconButton
                     edge='end'
                     aria-label='delete'
-                    onClick={handleClick}
+                    onClick={handleDelete}
                 >
                     <DeleteIcon />
                 </IconButton>

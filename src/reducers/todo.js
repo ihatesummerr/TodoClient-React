@@ -7,8 +7,11 @@ export default (state = [], action) => {
         case types.CREATE_TODO:
             return [...state, action.payload];
         case types.DELETE_TODO:
-            console.log(action.payload);
             return state.filter((todo) => todo._id !== action.payload);
+        case types.UPDATE_TODO:
+            return state.map((todo) =>
+                action.payload._id === todo._id ? action.payload : todo
+            );
         default:
             return state;
     }

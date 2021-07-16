@@ -21,3 +21,10 @@ export const deleteTodo = (id) => async (dispatch) => {
         dispatch({ type: types.DELETE_TODO, payload: id });
     } catch (error) {}
 };
+
+export const updateTodo = (id, todo) => async (dispatch) => {
+    try {
+        const { data } = await api.updateTodo(id, todo);
+        dispatch({ type: types.UPDATE_TODO, payload: data });
+    } catch (error) {}
+};
