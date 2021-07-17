@@ -7,10 +7,10 @@ const TodoList = ({ todos }) => {
         <List>
             {todos.map((todo) => {
                 return (
-                    <>
-                        <Todo todo={todo} key={todo._id} />
+                    <div key={todo._id}>
+                        <Todo todo={todo} />
                         <Divider />
-                    </>
+                    </div>
                 );
             })}
         </List>
